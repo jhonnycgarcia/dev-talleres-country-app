@@ -22,4 +22,18 @@ export class CountriesService {
       );
   }
 
+  public searchCountry(term: string): Observable<Country[]> {
+    return this.http.get<Country[]>(`${this.apiUrl}/name/${term}`)
+      .pipe(
+        catchError(() => of([]))
+      );
+  }
+
+  public searchRegion(region: string): Observable<Country[]> {
+    return this.http.get<Country[]>(`${this.apiUrl}/region/${region}`)
+      .pipe(
+        catchError(() => of([]))
+      );
+  }
+
 }
