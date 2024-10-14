@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, delay, map, Observable, of } from 'rxjs';
 import { Country } from '../interfaces/countries';
 
 @Injectable({
@@ -24,23 +24,22 @@ export class CountriesService {
   }
 
   public searchCapital(term: string): Observable<Country[]> {
-    return this.http.get<Country[]>(`${this.apiUrl}/capital/${term}`)
-      .pipe(
-        catchError(() => of([]))
-      );
+    return this.getCountriesRequest(`${this.apiUrl}/capital/${term}`);
   }
 
   public searchCountry(term: string): Observable<Country[]> {
-    return this.http.get<Country[]>(`${this.apiUrl}/name/${term}`)
-      .pipe(
-        catchError(() => of([]))
-      );
+    return this.getCountriesRequest(`${this.apiUrl}/name/${term}`);
   }
 
   public searchRegion(region: string): Observable<Country[]> {
-    return this.http.get<Country[]>(`${this.apiUrl}/region/${region}`)
+    return this.getCountriesRequest(`${this.apiUrl}/region/${region}`);
+  }
+
+  private getCountriesRequest(url: string): Observable<Country[]> {
+    return this.http.get<Country[]>(url)
       .pipe(
-        catchError(() => of([]))
+        catchError(() => of([])),
+        delay(2000)
       );
   }
 
